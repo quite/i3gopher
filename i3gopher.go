@@ -52,9 +52,10 @@ func getWorkspaceByCon(con i3.NodeID) i3.NodeID {
 }
 
 func main() {
-	flagLast := flag.Bool("last", false, "focus last container on current workspace")
 	flagExec := flag.String("exec", "", "cmd to exec on any window event (example: killall -USR1 i3status")
+	flagLast := flag.Bool("focus-last", false, "focus last container on current workspace")
 	flag.Parse()
+
 	if *flagLast {
 		ws := getWorkspaceByCon(getFocusedCon())
 		i3.RunCommand(fmt.Sprintf("[con_mark=%s%d] focus", markPrefix, ws))

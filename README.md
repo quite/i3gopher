@@ -14,11 +14,11 @@ In its present shape, the last focused container on a workspace is marked
 (`mark --add`) with the ID of that workspace. The rodent maintains such marks
 per workspace.
 
-Running `i3gopher -last` will get hold of the ID of the currently focused
+Running `i3gopher -focus-last` will get hold of the ID of the currently focused
 workspace, and focus the container marked with that ID. Add something like this
 in your config:
 
-    bindsym Mod1+Tab exec --no-startup-id i3gopher -last
+    bindsym Mod1+Tab exec --no-startup-id i3gopher --focus-last
 
 ## execute command on window event
 
