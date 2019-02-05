@@ -72,6 +72,7 @@ func main() {
 		var focusedcon = make(map[i3.NodeID]i3.NodeID)
 		current := getFocusedCon()
 		focusedcon[getWorkspaceByCon(current)] = current
+
 		for recv.Next() {
 			switch ev := recv.Event().(type) {
 			case *i3.WindowEvent:
@@ -80,15 +81,12 @@ func main() {
 					ws := getWorkspaceByCon(current)
 					if last, ok := focusedcon[ws]; ok {
 						if last != current {
-							i3.RunCommand(fmt.Sprintf("[con_id=%d] mark --add %s%d", last, markPrefix, ws))
-							// log.Println("mark con_id", last, "ws", ws)
+							cmd := fmt.Sprintf("[con_id=%d] mark --add %s%d",
+								last, markPrefix, ws)
+							i3.RunCommand(cmd)
 						}
 					}
 					focusedcon[ws] = current
-					// log.Println("WIND", current, "WS", ws)
-				}
-			case *i3.WorkspaceEvent:
-				if ev.Change == "focus" {
 				}
 			}
 		}
