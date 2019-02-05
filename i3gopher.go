@@ -24,7 +24,7 @@ func getFocusedCon() i3.NodeID {
 		return n.Focused && n.Type == i3.Con
 	})
 	if con == nil {
-		log.Fatalf("could not find a focused container")
+		return 0
 	}
 	return con.ID
 }
@@ -57,8 +57,12 @@ func main() {
 	flag.Parse()
 
 	if *flagLast {
-		ws := getWorkspaceByCon(getFocusedCon())
-		i3.RunCommand(fmt.Sprintf("[con_mark=%s%d] focus", markPrefix, ws))
+		con := getFocusedCon()
+		if con == 0 {
+			log.Fatalf("could not find a focused container")
+		}
+		i3.RunCommand(fmt.Sprintf("[con_mark=%s%d] focus",
+			markPrefix, getWorkspaceByCon(con)))
 		os.Exit(0)
 	}
 
@@ -75,7 +79,9 @@ func main() {
 	go func() {
 		var focusedcon = make(map[i3.NodeID]i3.NodeID)
 		current := getFocusedCon()
-		focusedcon[getWorkspaceByCon(current)] = current
+		if current != 0 {
+			focusedcon[getWorkspaceByCon(current)] = current
+		}
 
 		for recv.Next() {
 			switch ev := recv.Event().(type) {
