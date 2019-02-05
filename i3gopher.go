@@ -11,7 +11,7 @@ import (
 	"go.i3wm.org/i3"
 )
 
-const markPrefix = "_3g-last-on-"
+const markPrefix = "_i3gopher-last-on-"
 
 func getFocusedCon() i3.NodeID {
 	tree, err := i3.GetTree()

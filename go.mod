@@ -1,4 +1,4 @@
-module 3g
+module github.com/quite/i3gopher
 
 require (
 	go.i3wm.org/i3 v0.0.0-20181105220049-e2468ef5e1cd
