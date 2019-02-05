@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"go.i3wm.org/i3"
@@ -51,6 +53,7 @@ func getWorkspaceByCon(con i3.NodeID) i3.NodeID {
 
 func main() {
 	flagLast := flag.Bool("last", false, "focus last container on current workspace")
+	flagExec := flag.String("exec", "", "cmd to exec on any window event (example: killall -USR1 i3status")
 	flag.Parse()
 	if *flagLast {
 		ws := getWorkspaceByCon(getFocusedCon())
@@ -87,6 +90,12 @@ func main() {
 						}
 					}
 					focusedcon[ws] = current
+				}
+
+				if *flagExec != "" {
+					s := strings.Split(*flagExec, " ")
+					cmd := exec.Command(s[0], s[1:]...)
+					_ = cmd.Run()
 				}
 			}
 		}

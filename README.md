@@ -20,6 +20,16 @@ in your config:
 
     bindsym Mod1+Tab exec --no-startup-id i3gopher -last
 
+## execute command on window event
+
+If you are, like me, fixing to get the title of the currently focused window
+into the statusbar (maybe using `xtitle`), you might have a need for triggering
+`i3status` to refresh itself at suitable times. Since this rodent is already
+subscribing to window events, it has the feature to execute a command upon
+receiving such. You can thus start `i3gopher` like so:
+
+    exec --no-startup-id i3gopher -exec "killall -USR1 i3status"
+
 ## TODO
 
 - Moving a container to a different workspace messes up things. A container may
