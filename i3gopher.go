@@ -52,6 +52,7 @@ func getWorkspaceByCon(con i3.NodeID) i3.NodeID {
 }
 
 func main() {
+	log.SetPrefix("i3gopher ")
 	flagExec := flag.String("exec", "", "cmd to exec on any window event (example: killall -USR1 i3status")
 	flagLast := flag.Bool("focus-last", false, "focus last container on current workspace")
 	flag.Parse()
