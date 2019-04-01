@@ -43,10 +43,10 @@ func getWorkspaceByCon(con i3.NodeID) (i3.NodeID, error) {
 		return n.ID == con
 	})
 	if foundcon == nil {
-		return 0, fmt.Errorf("could not find container: %s", con)
+		return 0, fmt.Errorf("could not find container: %d", con)
 	}
 	if ws == 0 {
-		return 0, fmt.Errorf("could not get workspace of container: %s", con)
+		return 0, fmt.Errorf("could not get workspace of container: %d", con)
 	}
 	return ws, nil
 }
