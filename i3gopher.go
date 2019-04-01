@@ -15,7 +15,7 @@ import (
 
 const markPrefix = "_i3gopher-last-on-"
 
-func getFocusedCon() i3.NodeID {
+func getFocusedCon() (i3.NodeID, error) {
 	tree, err := i3.GetTree()
 	if err != nil {
 		log.Fatal(err)
@@ -24,12 +24,12 @@ func getFocusedCon() i3.NodeID {
 		return n.Focused && n.Type == i3.Con
 	})
 	if con == nil {
-		return 0
+		return 0, fmt.Errorf("could not find a focused container")
 	}
-	return con.ID
+	return con.ID, nil
 }
 
-func getWorkspaceByCon(con i3.NodeID) i3.NodeID {
+func getWorkspaceByCon(con i3.NodeID) (i3.NodeID, error) {
 	tree, err := i3.GetTree()
 	if err != nil {
 		log.Fatal(err)
@@ -43,12 +43,12 @@ func getWorkspaceByCon(con i3.NodeID) i3.NodeID {
 		return n.ID == con
 	})
 	if foundcon == nil {
-		log.Fatalf("could not find container")
+		return 0, fmt.Errorf("could not find container: %s", con)
 	}
 	if ws == 0 {
-		log.Fatalf("could not get workspace")
+		return 0, fmt.Errorf("could not get workspace of container: %s", con)
 	}
-	return ws
+	return ws, nil
 }
 
 func main() {
@@ -58,12 +58,16 @@ func main() {
 	flag.Parse()
 
 	if *flagLast {
-		con := getFocusedCon()
-		if con == 0 {
-			log.Fatalf("could not find a focused container")
+		con, err := getFocusedCon()
+		if err != nil {
+			log.Fatalf("focus-last failed: %s", err)
+		}
+		ws, err := getWorkspaceByCon(con)
+		if err != nil {
+			log.Fatalf("focus-last failed: %s", err)
 		}
 		i3.RunCommand(fmt.Sprintf("[con_mark=%s%d] focus",
-			markPrefix, getWorkspaceByCon(con)))
+			markPrefix, ws))
 		os.Exit(0)
 	}
 
@@ -79,9 +83,14 @@ func main() {
 	recv := i3.Subscribe(i3.WorkspaceEventType, i3.WindowEventType)
 	go func() {
 		var focusedcon = make(map[i3.NodeID]i3.NodeID)
-		current := getFocusedCon()
-		if current != 0 {
-			focusedcon[getWorkspaceByCon(current)] = current
+		current, err := getFocusedCon()
+		// just register currently focused container if there is one
+		if err == nil {
+			ws, err := getWorkspaceByCon(current)
+			if err != nil {
+				log.Fatalf("init: getting workspace of focused container: %s", err)
+			}
+			focusedcon[ws] = current
 		}
 
 		for recv.Next() {
@@ -89,7 +98,10 @@ func main() {
 			case *i3.WindowEvent:
 				if ev.Change == "focus" {
 					current := ev.Container.ID
-					ws := getWorkspaceByCon(current)
+					ws, err := getWorkspaceByCon(current)
+					if err != nil {
+						log.Fatalf("getting workspace of focused con: %s", err)
+					}
 					if last, ok := focusedcon[ws]; ok {
 						if last != current {
 							cmd := fmt.Sprintf("[con_id=%d] mark --add %s%d",
