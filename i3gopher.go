@@ -10,7 +10,7 @@ import (
 	"strings"
 	"syscall"
 
-	"go.i3wm.org/i3"
+	"go.i3wm.org/i3/v4"
 )
 
 const markPrefix = "_i3gopher-last-on-"
