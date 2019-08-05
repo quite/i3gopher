@@ -88,7 +88,7 @@ func main() {
 		if err == nil {
 			ws, err := getWorkspaceByCon(current)
 			if err != nil {
-				log.Fatalf("init: getting workspace of focused container: %s", err)
+				log.Printf("init: error getting workspace of focused container: %s", err)
 			}
 			focusedcon[ws] = current
 		}
@@ -100,7 +100,7 @@ func main() {
 					current := ev.Container.ID
 					ws, err := getWorkspaceByCon(current)
 					if err != nil {
-						log.Printf("warn: getting workspace of focused con: %#v", err)
+						log.Printf("warn: error getting workspace of focused container: %s", err)
 					}
 					if last, ok := focusedcon[ws]; ok {
 						if last != current {
