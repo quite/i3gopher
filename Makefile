@@ -8,7 +8,6 @@ lint:
 
 test:
 	go test
-	go build
 
 build:
 	go build
