@@ -1,0 +1,18 @@
+linters:
+  enable-all: true
+  disable:
+    - funlen
+    - gocognit
+    - gomnd
+    - wsl
+
+issues:
+  exclude:
+    # in the tests, this is a false positive (closure is executed immediately
+    # in the same iteration)
+     - Using the variable on range scope `tt` in function literal
+
+linters-settings:
+  gocritic:
+    disabled-checks:
+      - singleCaseSwitch
