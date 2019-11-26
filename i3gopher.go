@@ -174,6 +174,13 @@ type History struct {
 	mu      sync.Mutex
 }
 
+func newHistory() *History {
+	return &History{
+		wsNodes: make(map[i3.NodeID][]i3.NodeID),
+		mu:      sync.Mutex{},
+	}
+}
+
 func (h *History) FocusLast(_, _ *struct{}) error {
 	var err error
 	h.mu.Lock()
@@ -203,13 +210,6 @@ func (h *History) FocusLast(_, _ *struct{}) error {
 	}
 	h.wsNodes[focusedWS] = nodes
 	return err
-}
-
-func newHistory() *History {
-	return &History{
-		wsNodes: make(map[i3.NodeID][]i3.NodeID),
-		mu:      sync.Mutex{},
-	}
 }
 
 func (h *History) add(ws i3.NodeID, e i3.NodeID) {
