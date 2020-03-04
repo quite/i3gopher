@@ -75,7 +75,7 @@ func main() {
 
 				if *flagExec != "" {
 					s := strings.Split(*flagExec, " ")
-					_ = exec.Command(s[0], s[1:]...).Run() // #nosec
+					_ = exec.Command(s[0], s[1:]...).Run() //nolint:gosec
 				}
 			}
 		}
