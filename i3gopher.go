@@ -18,12 +18,14 @@ import (
 )
 
 func main() {
+	_, sway := os.LookupEnv("SWAYSOCK")
+
 	log.SetPrefix("i3gopher ")
 	flagExec := pflag.String("exec", "", "cmd to exec on any window event (example: killall -USR1 i3status")
 	flagLast := pflag.BoolP("focus-last", "l", false, "focus last focused container on current workspace")
 	pflag.Parse()
 
-	socketPath := getSocketPath()
+	socketPath := getSocketPath(sway)
 
 	if *flagLast {
 		client, err := rpc.DialHTTP("unix", socketPath)
@@ -46,6 +48,24 @@ func main() {
 		<-sig
 		quit <- true
 	}()
+
+	if sway {
+		i3.SocketPathHook = func() (string, error) {
+			out, err := exec.Command("sway", "--get-socketpath").CombinedOutput()
+			if err != nil {
+				return "", fmt.Errorf("getting sway socketpath: %v (output: %s)", err, out)
+			}
+			return string(out), nil
+		}
+		i3.IsRunningHook = func() bool {
+			out, err := exec.Command("swaymsg", "-t", "get_version").CombinedOutput()
+			if err != nil {
+				log.Printf("getting sway version: %v (output: %s)", err, out)
+				return false
+			}
+			return true
+		}
+	}
 
 	var history = newHistory()
 
@@ -107,16 +127,21 @@ func main() {
 	}
 }
 
-func getSocketPath() string {
-	d := fmt.Sprintf("/run/user/%d", os.Getuid())
-	f := "i3gopher"
-	if _, err := os.Stat(d); os.IsNotExist(err) {
-		d = fmt.Sprintf("/tmp/i3gopher-%d", os.Getuid())
-		f = "socket"
-		_ = os.Mkdir(d, 0700)
+func getSocketPath(sway bool) string {
+	dir := os.Getenv("XDG_RUNTIME_DIR")
+	if dir == "" {
+		dir = "/tmp"
 	}
-
-	return fmt.Sprintf("%s/%s", d, f)
+	var disp string
+	if sway {
+		disp = os.Getenv("WAYLAND_DISPLAY")
+	} else {
+		disp = os.Getenv("DISPLAY")
+	}
+	if disp == "" {
+		log.Fatalf("Environment variable DISPLAY/WAYLAND_DISPLAY missing")
+	}
+	return fmt.Sprintf("%s/i3gopher-%d-%s", dir, os.Getuid(), disp)
 }
 
 func getFocusedCon() (i3.NodeID, error) {

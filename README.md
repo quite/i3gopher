@@ -1,6 +1,7 @@
 # i3gopher
 
-`i3gopher` is a helper rodent for i3. It may take on various chores.
+`i3gopher` is a helper rodent for i3 and Sway (the i3-compatible Wayland
+compositor). It may take on various chores.
 
 ## Running
 
