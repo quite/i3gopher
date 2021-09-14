@@ -7,7 +7,7 @@ import (
 	"go.i3wm.org/i3/v4"
 )
 
-func GetFocusedCon() (i3.NodeID, error) {
+func GetFocusedCon() (*i3.Node, error) {
 	tree, err := i3.GetTree()
 	if err != nil {
 		log.Fatal(err)
@@ -16,9 +16,9 @@ func GetFocusedCon() (i3.NodeID, error) {
 		return n.Focused && n.Type == i3.Con
 	})
 	if con == nil {
-		return 0, fmt.Errorf("could not find a focused container")
+		return nil, fmt.Errorf("could not find a focused container")
 	}
-	return con.ID, nil
+	return con, nil
 }
 
 func GetFocusedWS() (i3.NodeID, error) {

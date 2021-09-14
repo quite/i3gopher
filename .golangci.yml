@@ -12,6 +12,8 @@ linters:
     # TODO?
     - goerr113
     - testpackage
+    - cyclop
+    - paralleltest
 
 issues:
   exclude:

@@ -32,6 +32,15 @@ receiving such. You can thus start `i3gopher` like so:
 
     exec --no-startup-id i3gopher --exec "killall -USR1 i3status"
 
+### Exclude windows from history
+
+The optional `--exclude` option can be used to make i3gopher exclude certain
+windows from ever being added to the history. It takes a regular expression
+that is matched against the window's instance name. So, if you run `i3gopher
+--exclude excludei3gopher`, it will exclude an Alacritty that was started as
+`alacritty --class excludei3gopher`. Note: I don't run Wayland yet, and I'm not
+sure if this works in Sway since class/instance is an X11 thing.
+
 ## Upgrading
 
 Since version 1.0, POSIX/GNU style flags are used:

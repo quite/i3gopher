@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"regexp"
 	"strings"
 	"syscall"
 
@@ -23,8 +24,14 @@ func main() {
 
 	log.SetPrefix("i3gopher ")
 	flagExec := pflag.String("exec", "", "cmd to exec on any window event (example: killall -USR1 i3status")
+	flagExclude := pflag.String("exclude", "", "ignore container from history if its instance name matches this regexp")
 	flagLast := pflag.BoolP("focus-last", "l", false, "focus last focused container on current workspace")
 	pflag.Parse()
+
+	var excludeRE *regexp.Regexp
+	if *flagExclude != "" {
+		excludeRE = regexp.MustCompile(*flagExclude)
+	}
 
 	socketPath := getSocketPath(sway)
 
@@ -75,23 +82,14 @@ func main() {
 		current, err := util.GetFocusedCon()
 		// just register currently focused container if there is one
 		if err == nil {
-			ws, err := util.GetWorkspaceByCon(current)
-			if err != nil {
-				log.Printf("init: error getting workspace of focused container: %s", err)
-			}
-			hist.Add(ws, current)
+			add(hist, excludeRE, current)
 		}
 
 		for recv.Next() {
 			switch ev := recv.Event().(type) {
 			case *i3.WindowEvent:
 				if ev.Change == "focus" {
-					current := ev.Container.ID
-					ws, err := util.GetWorkspaceByCon(current)
-					if err != nil {
-						log.Printf("warn: error getting workspace of focused container: %s", err)
-					}
-					hist.Add(ws, current)
+					add(hist, excludeRE, &ev.Container)
 				}
 
 				if *flagExec != "" {
@@ -125,6 +123,18 @@ func main() {
 
 	if err := recv.Close(); err != nil {
 		log.Fatal(err)
+	}
+}
+
+func add(hist *history.History, excludeRE *regexp.Regexp, con *i3.Node) {
+	ws, err := util.GetWorkspaceByCon(con.ID)
+	if err != nil {
+		log.Printf("init: error getting workspace of focused container: %s", err)
+	}
+	if excludeRE == nil || !excludeRE.Match([]byte(con.WindowProperties.Instance)) {
+		hist.Add(ws, con.ID)
+	} else {
+		log.Printf("excluded container with instance:%s title:%s", con.WindowProperties.Instance, con.WindowProperties.Title)
 	}
 }
 
