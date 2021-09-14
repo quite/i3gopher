@@ -27,7 +27,7 @@ func (h *History) FocusLast(_, _ *struct{}) error {
 
 	focusedWS, err := util.GetFocusedWS()
 	if err != nil {
-		return fmt.Errorf("getFocusedWS: %s", err)
+		return fmt.Errorf("getFocusedWS: %w", err)
 	}
 
 	nodes := h.wsNodes[focusedWS]
@@ -42,7 +42,7 @@ func (h *History) FocusLast(_, _ *struct{}) error {
 			continue
 		}
 		if _, err = i3.RunCommand(fmt.Sprintf("[con_id=%d] focus", last)); err != nil {
-			err = fmt.Errorf("i3.RunCommand: %s", err)
+			err = fmt.Errorf("i3.RunCommand: %w", err)
 			break
 		}
 		break

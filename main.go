@@ -54,7 +54,7 @@ func main() {
 		i3.SocketPathHook = func() (string, error) {
 			out, err := exec.Command("sway", "--get-socketpath").CombinedOutput()
 			if err != nil {
-				return "", fmt.Errorf("getting sway socketpath: %v (output: %s)", err, out)
+				return "", fmt.Errorf("getting sway socketpath: %w (output: %s)", err, out)
 			}
 			return string(out), nil
 		}
