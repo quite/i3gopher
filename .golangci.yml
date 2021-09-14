@@ -1,18 +1,24 @@
 linters:
   enable-all: true
   disable:
-    - funlen
-    - gocognit
-    - gomnd
-    - wsl
+    # deprecated
+    - golint
+    - scopelint
+    - maligned
+    - interfacer
 
-    - gofumpt
+    - wsl
+    - cyclop
+    - gomnd
     - gci
-    - nlreturn
     # TODO?
     - goerr113
+    - nlreturn
+    - funlen
+
+    - gocognit
+
     - testpackage
-    - cyclop
     - paralleltest
 
 issues:

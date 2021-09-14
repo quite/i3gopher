@@ -75,7 +75,7 @@ func main() {
 		}
 	}
 
-	var hist = history.NewHistory()
+	hist := history.NewHistory()
 
 	recv := i3.Subscribe(i3.WindowEventType)
 	go func() {

@@ -9,7 +9,7 @@ import (
 )
 
 func TestDrop(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		in    []i3.NodeID
 		depth int
 		out   []i3.NodeID
@@ -32,7 +32,7 @@ func TestDrop(t *testing.T) {
 }
 
 func TestCompact(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		in  []i3.NodeID
 		out []i3.NodeID
 	}{
@@ -55,7 +55,7 @@ func TestCompact(t *testing.T) {
 }
 
 func TestDropPair(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		in  []i3.NodeID
 		out []i3.NodeID
 	}{
