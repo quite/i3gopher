@@ -131,10 +131,9 @@ func add(hist *history.History, excludeRE *regexp.Regexp, con *i3.Node) {
 	if err != nil {
 		log.Printf("init: error getting workspace of focused container: %s", err)
 	}
-	if excludeRE == nil || !excludeRE.Match([]byte(con.WindowProperties.Instance)) {
+	var instance []byte = []byte(con.WindowProperties.Instance)
+	if excludeRE == nil || len(instance) == 0 || !excludeRE.Match(instance) {
 		hist.Add(ws, con.ID)
-	} else {
-		log.Printf("excluded container with instance:%s title:%s", con.WindowProperties.Instance, con.WindowProperties.Title)
 	}
 }
 

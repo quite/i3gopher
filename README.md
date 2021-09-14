@@ -54,6 +54,8 @@ Since version 1.0, POSIX/GNU style flags are used:
 
 ## TODO
 
-- No thought about floating containers.
+- Consider floating containers. Should they be ignored? Or kept in a separate
+  history? Since i3 has `focus mode_toggle` which focused the last floating or
+  tiling container.
 
-- ...
+- How deep does the stack need to be?
