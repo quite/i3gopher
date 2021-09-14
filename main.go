@@ -77,7 +77,7 @@ func main() {
 
 	var hist = history.NewHistory()
 
-	recv := i3.Subscribe(i3.WorkspaceEventType, i3.WindowEventType)
+	recv := i3.Subscribe(i3.WindowEventType)
 	go func() {
 		current, err := util.GetFocusedCon()
 		// just register currently focused container if there is one
@@ -86,8 +86,7 @@ func main() {
 		}
 
 		for recv.Next() {
-			switch ev := recv.Event().(type) {
-			case *i3.WindowEvent:
+			if ev, ok := recv.Event().(*i3.WindowEvent); ok {
 				if ev.Change == "focus" {
 					add(hist, excludeRE, &ev.Container)
 				}

@@ -23,8 +23,6 @@ issues:
 
 linters-settings:
   gocritic:
-    disabled-checks:
-      - singleCaseSwitch
     enabled-tags:
       - diagnostic
       - style
