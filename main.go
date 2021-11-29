@@ -132,7 +132,7 @@ func add(hist *history.History, excludeRE *regexp.Regexp, con *i3.Node) {
 	}
 	var instance []byte = []byte(con.WindowProperties.Instance)
 	if excludeRE == nil || len(instance) == 0 || !excludeRE.Match(instance) {
-		hist.Add(ws, con.ID)
+		_ = hist.Add(ws, &con.ID)
 	}
 }
 

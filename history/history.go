@@ -51,16 +51,17 @@ func (h *History) FocusLast(_, _ *struct{}) error {
 	return err
 }
 
-func (h *History) Add(ws, e i3.NodeID) {
+func (h *History) Add(ws i3.NodeID, e *i3.NodeID) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
 	nodes := h.wsNodes[ws]
-	if peek(nodes, 0) == e {
-		return
+	if peek(nodes, 0) == *e {
+		return nil
 	}
-	nodes = push(nodes, e)
+	nodes = push(nodes, *e)
 	h.wsNodes[ws] = nodes
+	return nil
 }
 
 func push(s []i3.NodeID, e i3.NodeID) []i3.NodeID {
