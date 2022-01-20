@@ -9,6 +9,7 @@ linters:
 
     - wsl
     - cyclop
+    - varnamelen
     - gomnd
     - gci
     # TODO?
