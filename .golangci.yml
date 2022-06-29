@@ -1,38 +1,26 @@
 linters:
-  enable-all: true
+  presets:
+    # from: golangci-lint help linters
+    - bugs
+    - comment
+    # - complexity
+    - error
+    - format
+    - import
+    - metalinter
+    - module
+    - performance
+    - sql
+    #- style
+    - test
+    - unused
   disable:
-    # deprecated
-    - golint
-    - scopelint
-    - maligned
-    - interfacer
-
-    - wsl
-    - cyclop
-    - varnamelen
-    - gomnd
-    - gci
-    # TODO?
-    - goerr113
-    - nlreturn
-    - funlen
-
-    - gocognit
-
     - testpackage
     - paralleltest
-
+    # deprecated:
+    - scopelint
+    - maligned
+    - exhaustivestruct
 issues:
-  exclude:
-    # in the tests, this is a false positive (closure is executed immediately
-    # in the same iteration)
-     - Using the variable on range scope `tt` in function literal
-
-linters-settings:
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - style
-      - performance
-      - experimental
-      - opinionated
+  max-issues-per-linter: 0
+  max-same-issues: 0

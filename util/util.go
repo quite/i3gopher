@@ -1,10 +1,17 @@
 package util
 
 import (
-	"fmt"
+	"errors"
 	"log"
 
 	"go.i3wm.org/i3/v4"
+)
+
+var (
+	ErrNoFocusedContainer   = errors.New("could not find a focused container")
+	ErrNoFocusedWorkspace   = errors.New("could not find a focused workspace")
+	ErrContainerNotFound    = errors.New("could not find container")
+	ErrContainerNoWorkspace = errors.New("could not get workspace of container")
 )
 
 func GetFocusedCon() (*i3.Node, error) {
@@ -16,7 +23,7 @@ func GetFocusedCon() (*i3.Node, error) {
 		return n.Focused && n.Type == i3.Con
 	})
 	if con == nil {
-		return nil, fmt.Errorf("could not find a focused container")
+		return nil, ErrNoFocusedContainer
 	}
 	return con, nil
 }
@@ -30,7 +37,7 @@ func GetFocusedWS() (i3.NodeID, error) {
 		return n.Type == i3.WorkspaceNode
 	})
 	if ws == nil {
-		return 0, fmt.Errorf("could not find a focused workspace")
+		return 0, ErrNoFocusedWorkspace
 	}
 	return ws.ID, nil
 }
@@ -49,10 +56,10 @@ func GetWorkspaceByCon(con i3.NodeID) (i3.NodeID, error) {
 		return n.ID == con
 	})
 	if foundcon == nil {
-		return 0, fmt.Errorf("could not find container: %d", con)
+		return 0, ErrContainerNotFound
 	}
 	if ws == 0 {
-		return 0, fmt.Errorf("could not get workspace of container: %d", con)
+		return 0, ErrContainerNoWorkspace
 	}
 	return ws, nil
 }
