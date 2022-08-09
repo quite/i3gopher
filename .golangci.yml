@@ -11,7 +11,7 @@ linters:
     - module
     - performance
     - sql
-    #- style
+    # - style
     - test
     - unused
   disable:
