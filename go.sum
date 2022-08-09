@@ -893,8 +893,8 @@ go.etcd.io/etcd/client/pkg/v3 v3.5.4/go.mod h1:IJHfcCEKxYu1Os13ZdwCwIUTUVGYTSAM3
 go.etcd.io/etcd/client/v2 v2.305.1/go.mod h1:pMEacxZW7o8pg4CrFE7pquyCJJzZvkvdD2RibOCCCGs=
 go.etcd.io/etcd/client/v2 v2.305.4/go.mod h1:Ud+VUwIi9/uQHOMA+4ekToJ12lTxlv0zB/+DHwTGEbU=
 go.etcd.io/etcd/client/v3 v3.5.4/go.mod h1:ZaRkVgBZC+L+dLCjTcF1hRXpgZXQPOvnA/Ak/gq3kiY=
-go.i3wm.org/i3/v4 v4.18.1-0.20210730205143-9d4f5304b240 h1:eDIt0p9MdaiPWgrqCRfqEIESubmBf52jkX7rMpgooaw=
-go.i3wm.org/i3/v4 v4.18.1-0.20210730205143-9d4f5304b240/go.mod h1:FN6trxp2TXmfzQVa6JSKq5IJx/XUJsnPFKAz15cBWtw=
+go.i3wm.org/i3/v4 v4.18.1-0.20220809065913-4e3c3810804c h1:vqQQMIjwj7y2jwsLDqWrVoFRuj4JiYSUCXgp0kT7oBg=
+go.i3wm.org/i3/v4 v4.18.1-0.20220809065913-4e3c3810804c/go.mod h1:FN6trxp2TXmfzQVa6JSKq5IJx/XUJsnPFKAz15cBWtw=
 go.mozilla.org/mozlog v0.0.0-20170222151521-4bb13139d403/go.mod h1:jHoPAGnDrCy6kaI2tAze5Prf0Nr0w/oNkROt2lw3n3o=
 go.opencensus.io v0.21.0/go.mod h1:mSImk1erAIZhrmZN+AvHh14ztQfjbGwt4TtuofqLduU=
 go.opencensus.io v0.22.0/go.mod h1:+kGneAE2xo2IficOXnaByMWTGM9T73dGwxeWcUqIpI8=

@@ -130,10 +130,14 @@ func add(hist *history.History, excludeRE *regexp.Regexp, con *i3.Node) {
 	if err != nil {
 		log.Printf("init: error getting workspace of focused container: %s", err)
 	}
-	var instance []byte = []byte(con.WindowProperties.Instance)
-	if excludeRE == nil || len(instance) == 0 || !excludeRE.Match(instance) {
-		_ = hist.Add(ws, &con.ID)
+	if excludeRE != nil {
+		for _, s := range []string{con.WindowProperties.Instance, con.AppID} {
+			if len(s) != 0 && excludeRE.MatchString(s) {
+				return
+			}
+		}
 	}
+	_ = hist.Add(ws, &con.ID)
 }
 
 func getSocketPath(sway bool) string {
