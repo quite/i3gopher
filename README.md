@@ -14,11 +14,11 @@ You probably want to run it from your `.i3/config`. Like:
 ### Focus the last focused container
 
 The rodent subscribes to i3 events and tracks the history of focused containers
-*on* *each* *workspace*. It tries to be clever and ignores containers that
-disappear (close, or move to another workspace).
+*per* *workspace*. It tries to be clever and ignores containers that disappear
+(are closed, or moved to another workspace).
 
-Running `i3gopher --focus-last` tell an already running i3gopher to focused the
-last focused container on the currently focused workspace.
+Running `i3gopher --focus-last` will tell an already running i3gopher to focus
+the last focused container in the currently focused workspace.
 
     bindsym Mod1+Tab exec --no-startup-id i3gopher --focus-last
 
@@ -36,10 +36,12 @@ receiving such. You can thus start `i3gopher` like so:
 
 The optional `--exclude` option can be used to make i3gopher exclude certain
 windows from ever being added to the history. It takes a regular expression
-that is matched against the window's instance name. So, if you run `i3gopher
---exclude excludei3gopher`, it will exclude an Alacritty that was started as
-`alacritty --class excludei3gopher`. Note: I don't run Wayland yet, and I'm not
-sure if this works in Sway since class/instance is an X11 thing.
+that is matched against the window's instance name (under i3). So, if you run
+`i3gopher --exclude excludei3gopher`, it will exclude an Alacritty that was
+started as `alacritty --class excludei3gopher`. Under Sway, Alacritty's
+`--class` sets the Wayland App ID, which the exclude argument is matched
+against (supported by i3wm go bindings since [this
+commit](https://github.com/i3/go-i3/commit/4e3c3810804c9b631c15644c9e885c90aa1a65d7)).
 
 ## Upgrading
 
