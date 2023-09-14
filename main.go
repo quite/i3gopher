@@ -112,6 +112,7 @@ func main() {
 		if e != nil {
 			log.Fatalf("listen error: %s", e)
 		}
+		//nolint:gosec // not worrying about
 		err := http.Serve(l, nil)
 		if err != nil {
 			log.Fatal(err)

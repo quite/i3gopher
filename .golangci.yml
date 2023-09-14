@@ -1,9 +1,9 @@
 linters:
   presets:
-    # from: golangci-lint help linters
+    # found in: golangci-lint help linters
     - bugs
     - comment
-    # - complexity
+    - complexity
     - error
     - format
     - import
@@ -11,18 +11,32 @@ linters:
     - module
     - performance
     - sql
-    # - style
+    # - style  # turned off, can be too much
     - test
     - unused
   disable:
     - testpackage
     - paralleltest
+    - cyclop
+    - funlen
+    - gocognit
+    - nestif
+    - exhaustruct  # TODO? annoying for now
+    - goerr113  # TODO enable later
+    - godot
+    - godox
+    - depguard
+    - wrapcheck # TODO enable?
 
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
+  exclude-rules:
+    - linters:
+        - revive
+      text: increment-decrement
 
 linters-settings:
-govet:
-  enable:
-    - shadow
+  govet:
+    enable:
+      - shadow
