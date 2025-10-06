@@ -2,8 +2,8 @@
 all: test build
 
 .PHONY: install
-install: lint test build
-	sudo cp -af i3gopher /usr/local/bin/
+install: all
+	sudo install i3gopher /usr/local/bin/
 
 .PHONY: test
 test:
